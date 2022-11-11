@@ -21,6 +21,12 @@
     "system-settings": [
     ],
     "project-settings": [
+        {
+            "key": "debug",
+            "name": "Enable the <b>debug mode</b> (outputs tons of information to the console)",
+            "tt_name": "config_debug",
+            "type": "checkbox"
+        }
     ],
     "auth-ajax-actions": [
     ],
