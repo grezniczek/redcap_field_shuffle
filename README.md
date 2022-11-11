@@ -41,4 +41,5 @@ When a survey page is rendered that already has (valid) data in the field holdin
 
 Version | Comment
 ------- | -------------
+1.0.1   | Bugfix: Question numbers are now in correct order.
 1.0.0   | Initial release.

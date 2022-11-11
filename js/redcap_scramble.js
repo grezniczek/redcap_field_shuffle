@@ -93,8 +93,8 @@ function scramble() {
                 log('Moving field "' + toField + '" -> ' + fieldName);
                 orig[toField].row.insertAfter(orig[fieldName].mark);
                 if (config.isSurvey) {
-                    const $num = orig[fieldName].row.find('td.questionnum');
-                    $num.before(orig[toField].num);
+                    const $num = orig[toField].row.find('td.questionnum');
+                    $num.before(orig[fieldName].num);
                     $num.remove();
                 }
             }
