@@ -1,0 +1,35 @@
+{
+    "name": "REDCap Scramble",
+    "tt_name": "module_name",
+    "namespace": "RUB\\REDCapScrambleExternalModule",
+    "description": "A REDCap External Module that puts fields into a random order.",
+    "tt_description": "module_desc",
+    "documentation": "README.md",
+    "tt_documentation": "module_docs",
+    "authors": [
+        {
+            "name": "Günther Rezniczek",
+            "email": "guenther.rezniczek@rub.de",
+            "institution": "Ruhr-Universität Bochum"
+        }
+    ],
+    "framework-version": 11,
+    "permissions": [
+        "redcap_survey_page",
+        "redcap_data_entry_form"
+    ],
+    "system-settings": [
+    ],
+    "project-settings": [
+    ],
+    "auth-ajax-actions": [
+    ],
+    "no-auth-ajax-actions": [
+    ],
+    "crons": [
+    ],
+    "compatibility": {
+        "php-version-min": "7.4.0",
+        "redcap-version-min": "12.4.0"
+     }
+}
