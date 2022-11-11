@@ -1,5 +1,5 @@
 {
-    "name": "REDCap Scramble",
+    "name": "Scramble",
     "tt_name": "module_name",
     "namespace": "RUB\\REDCapScrambleExternalModule",
     "description": "A REDCap External Module that puts fields into a random order.",
