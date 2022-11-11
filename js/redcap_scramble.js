@@ -28,10 +28,18 @@ let config;
 
 function init(data) {
     config = data;
-    console.log('Scrambled', config);
+
+    $(scramble);
 }
 
 //#endregion
 
+function scramble() {
+    
+    for (const field in config.fields) {
+        console.log('Scrambling ' + field);
+        console.table(config.fields[field]);
+    }
+}
 
 })();

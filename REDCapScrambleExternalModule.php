@@ -42,10 +42,10 @@ class REDCapScrambleExternalModule extends \ExternalModules\AbstractExternalModu
 
     function redcap_survey_page($project_id, $record = NULL, $instrument, $event_id, $group_id = NULL, $survey_hash, $response_id = NULL, $repeat_instance = 1) {
 
-        $tags = $this->get_scramble_settings($project_id, $instrument, $event_id, $repeat_instance);
+        $settings = $this->get_scramble_settings($project_id, $instrument, $event_id, $repeat_instance);
 
         $this->ih->js("js/redcap_scramble.js", true);
-        print "<script>REDCap.EM.RUB.REDCapScramble.init(".json_encode($tags, JSON_UNESCAPED_UNICODE).");</script>";
+        print "<script>REDCap.EM.RUB.REDCapScramble.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
     }
 
     #endregion
@@ -75,7 +75,9 @@ class REDCapScrambleExternalModule extends \ExternalModules\AbstractExternalModu
             }
             array_multisort($sort_by, SORT_NUMERIC, $fields);
         }
-        return $tags;
+        return array(
+            "fields" => $tags
+        );
     }
 
 }
