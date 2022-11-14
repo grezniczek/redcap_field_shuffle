@@ -1,10 +1,10 @@
-// REDCap Scramble
+// Field Shuffle EM
 // @ts-check
 ;(function() {
 
 //#region Variables and Initialization
 
-const APP_NAME = 'Scramble';
+const APP_NAME = 'Field Shuffle';
 
 if (typeof window['REDCap'] == 'undefined') {
     window['REDCap'] = {
@@ -19,7 +19,7 @@ if (typeof window['REDCap']['EM'] == 'undefined') {
 if (typeof window['REDCap']['EM']['RUB'] == 'undefined') {
     window['REDCap']['EM']['RUB'] = {};
 }
-window['REDCap']['EM']['RUB']['REDCapScramble'] = {
+window['REDCap']['EM']['RUB']['FieldShuffle'] = {
     init: init,
 };
 
@@ -28,34 +28,34 @@ let config;
 function init(data) {
     config = data;
     log(config);
-    $(scramble);
+    $(shuffleFields);
 }
 
 //#endregion
 
-//#region Scrambler
+//#region Field Shuffling
 
-function scramble() {
+function shuffleFields() {
     for (const target in config.targets) {
         const this_target = config.targets[target];
         const map = this_target.map;
         try {
-            let scrambled = this_target.scrambled.join('-');
+            let shuffled = this_target.shuffled.join('-');
             let original = this_target.original.join('-');
-            log('Scrambling "' + target + '": ' + original + ' -> ' + scrambled);
+            log('Shuffling "' + target + '": ' + original + ' -> ' + shuffled);
             const $target = $('input[type=text][name="' + target + '"]');
             if ($target.length != 1) {
                 warn('Target field "' + target + '" not found.');
                 continue;
             }
             if ($target.val() != '') {
-                scrambled = ($target.val() ?? '').toString();
-                log('Target field "' + target + '" already has a value: ' + scrambled);
-                const scrambledItems = scrambled.split('-');
-                if (scrambledItems.length == this_target.original.length) {
+                shuffled = ($target.val() ?? '').toString();
+                log('Target field "' + target + '" already has a value: ' + shuffled);
+                const shuffledItems = shuffled.split('-');
+                if (shuffledItems.length == this_target.original.length) {
                     // Apply stored order to map
-                    for (let i = 0; i < scrambledItems.length; i++) {
-                        map[this_target.original[i]] = scrambledItems[i];
+                    for (let i = 0; i < shuffledItems.length; i++) {
+                        map[this_target.original[i]] = shuffledItems[i];
                     }
                     log('Updated map:', map);
                 }
@@ -65,7 +65,7 @@ function scramble() {
                 }
             }
             else {
-                $target.val(scrambled);
+                $target.val(shuffled);
             }
             const orig = {};
             for (const fieldName of this_target.original) {
@@ -74,7 +74,7 @@ function scramble() {
                 const $num = $row.find('td.questionnum');
                 // Add hidden marker row before and save questionnum
                 const $mark = $('<tr></tr>');
-                $mark.attr('data-scramble-mark', fieldName);
+                $mark.attr('data-shuffle-mark', fieldName);
                 $mark.css('display','none');
                 if (config.isSurvey) {
                     $num.before($num.clone(false));
@@ -99,7 +99,7 @@ function scramble() {
                 }
             }
             // Remove marker rows
-            $('[data-scramble-mark]').remove();
+            $('[data-shuffle-mark]').remove();
         }
         catch (err) {
             error(err);

@@ -1,16 +1,16 @@
-<?php namespace RUB\REDCapScrambleExternalModule;
+<?php namespace RUB\FieldShuffleExternalModule;
 
 require_once "classes/InjectionHelper.php";
 require_once "classes/ActionTagParser.php";
 
 /**
- * ExternalModule class for REDCap Scramble.
+ * ExternalModule class for Field Shuffle.
  */
-class REDCapScrambleExternalModule extends \ExternalModules\AbstractExternalModule {
+class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule {
 
 
-    const AT_SCRAMBLE_SURVEY = "@SCRAMBLE-SURVEY";
-    const AT_SCRAMBLE_DATAENTRY = "@SCRAMBLE-DATAENTRY";
+    const AT_SHUFFLE_SURVEY = "@SHUFFLE-FIELDS-SURVEY";
+    const AT_SHUFFLE_DATAENTRY = "@SHUFFLE-FIELDS-DATAENTRY";
 
     #region Constructor and Instance Variables
 
@@ -36,27 +36,27 @@ class REDCapScrambleExternalModule extends \ExternalModules\AbstractExternalModu
     #region Hooks
 
     function redcap_data_entry_form($project_id, $record = NULL, $instrument, $event_id, $group_id = NULL, $repeat_instance = 1) {
-        $settings = $this->get_scramble_settings($project_id, $instrument, self::AT_SCRAMBLE_DATAENTRY);
+        $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_DATAENTRY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = false;
-            $this->ih->js("js/redcap_scramble.js", true);
-            print "<script>REDCap.EM.RUB.REDCapScramble.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
+            $this->ih->js("js/field-shuffle-em.js", true);
+            print "<script>REDCap.EM.RUB.FieldShuffle.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
         }
     }
 
     function redcap_survey_page($project_id, $record = NULL, $instrument, $event_id, $group_id = NULL, $survey_hash, $response_id = NULL, $repeat_instance = 1) {
-        $settings = $this->get_scramble_settings($project_id, $instrument, self::AT_SCRAMBLE_SURVEY);
+        $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_SURVEY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = true;
-            $this->ih->js("js/redcap_scramble.js", true);
-            print "<script>REDCap.EM.RUB.REDCapScramble.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
+            $this->ih->js("js/field-shuffle-em.js", true);
+            print "<script>REDCap.EM.RUB.FieldShuffle.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
         }
     }
 
     #endregion
 
 
-    private function get_scramble_settings($pid, $form, $at_name) {
+    private function get_settings($pid, $form, $at_name) {
         $targets = [];
         $Proj = new \Project($pid);
         foreach ($Proj->forms[$form]["fields"] as $target => $_) {
@@ -79,7 +79,7 @@ class REDCapScrambleExternalModule extends \ExternalModules\AbstractExternalModu
             }
             $sorted = array_merge($target_data["original"]);
             array_multisort($sort_by, SORT_NUMERIC, $sorted);
-            $targets[$target]["scrambled"] = $sorted;
+            $targets[$target]["shuffled"] = $sorted;
             for ($i = 0; $i < count($sorted); $i++) {
                 $targets[$target]["map"][$target_data["original"][$i]] = $sorted[$i];
             }

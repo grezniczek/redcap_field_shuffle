@@ -1,4 +1,4 @@
-<?php namespace RUB\REDCapScrambleExternalModule;
+<?php namespace RUB\FieldShuffleExternalModule;
 
 class ActionTagParser {
 
