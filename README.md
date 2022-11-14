@@ -37,7 +37,7 @@ When the survey (or data entry form) loads, the question order is shuffled and t
 
 When a survey page is rendered that already has (valid) data in the field holding the field order, then this order will be replicated. If the stored data is invalid, then no field reordering will occur.
 
-A demo project can be downloaded [here](./demo/FieldShuffleDemo.REDCap.xml).
+A demo project can be downloaded [here](https://raw.githubusercontent.com/grezniczek/redcap_field_shuffle/main/demo/FieldShuffleDemo.REDCap.xml) (file hosted on GitHub).
 
 ## Changelog
 
