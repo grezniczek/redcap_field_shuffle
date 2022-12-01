@@ -43,6 +43,7 @@ A demo project can be downloaded [here](https://raw.githubusercontent.com/grezni
 
 Version | Comment
 ------- | -------------
+1.0.3   | Lowered version requirements (REDCap 11.4.4, EM Framework 8).
 1.0.2   | EM renamed to 'Field Shuffle'.
 1.0.1   | Bugfix: Question numbers are now in correct order.
 1.0.0   | Initial release.
