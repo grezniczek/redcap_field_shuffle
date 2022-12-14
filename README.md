@@ -31,7 +31,19 @@ For example, let's assume a survey with four questions, _q1_, _q2_, _q3_, and _q
 > `@SHUFFLE-FIELDS-SURVEY="q1,q2,q3,q4"`  
 > `@HIDDEN-SURVEY @READONLY`
 
-to a further field, e.g., _order_q1_4_. 
+to a further field, e.g., _displayed_order_. 
+
+### Block shuffling
+
+Fields can be grouped with parentheses. Grouped fields will be shuffled as a block, i.e. the first field in the block will be shuffled with all other standalone/first block fields and the other fields in the block will be inserted after the first field in the given order.
+
+For example, let's assume there are seven questions, _q1_ to _q7_, but the questions 1-3 and 6-7 should always stay together. To randomize them, add
+> `@SHUFFLE-FIELDS-SURVEY="(q1,q2,q3),q4,q5,(q6,q7)"`  
+> `@HIDDEN-SURVEY @READONLY`
+
+to the text field that will capture the order of the actual displayed fields. Shuffle results might then be: _q5-q1-q2-q3-q6-q7-q4_ or _q6-q7-q1-q2-q3-q5-q4_.  
+It must be ensured that parenthesis are matched and not nested. Field names and blocks must be separated by commas, as shown in the example above.
+
 
 When the survey (or data entry form) loads, the question order is shuffled and the displayed field order is entered into the field with the action tag. On survey pages with field numbers, the original order is preserved.
 
@@ -43,6 +55,7 @@ A demo project can be downloaded [here](https://raw.githubusercontent.com/grezni
 
 Version | Comment
 ------- | -------------
+1.1.0   | New feature: Support for block shuffling.
 1.0.3   | Lowered version requirements (REDCap 11.4.4, EM Framework 8).
 1.0.2   | EM renamed to 'Field Shuffle'.
 1.0.1   | Bugfix: Question numbers are now in correct order.
