@@ -37,11 +37,11 @@ to a further field, e.g., _displayed_order_.
 
 Fields can be grouped with parentheses. Grouped fields will be shuffled as a block, i.e. the first field in the block will be shuffled with all other standalone/first block fields and the other fields in the block will be inserted after the first field in the given order.
 
-For example, let's assume there are seven questions, _q1_ to _q7_, but the questions 1-3 and 6-7 should always stay together. To randomize them, add
-> `@SHUFFLE-FIELDS-SURVEY="(q1,q2,q3),q4,q5,(q6,q7)"`  
+For example, let's assume there are seven questions, _b1_ to _b7_, but the questions 1-3 and 6-7 should always stay together. To randomize them, add
+> `@SHUFFLE-FIELDS-SURVEY="(b1,b2,b3),b4,b5,(b6,b7)"`  
 > `@HIDDEN-SURVEY @READONLY`
 
-to the text field that will capture the order of the actual displayed fields. Shuffle results might then be: _q5-q1-q2-q3-q6-q7-q4_ or _q6-q7-q1-q2-q3-q5-q4_.  
+to the text field that will capture the order of the actual displayed fields. Shuffle results might then be: _b5-b1+b2+b3-b6+b7-b4_ or _b6+q7-b1+b2+b3-b5-b4_. Plus is used as in-block delimiter instead of the hyphen.  
 It must be ensured that parenthesis are matched and not nested. Field names and blocks must be separated by commas, as shown in the example above.
 
 
