@@ -18,6 +18,18 @@
         "redcap_survey_page",
         "redcap_data_entry_form"
     ],
+    "action-tags": [
+        {
+            "tag": "@SHUFFLE-FIELDS-DATAENTRY",
+            "description": "See English.ini",
+            "tt_description": "shuffle_fields_dataentry_desc"
+        },
+        {
+            "tag": "@SHUFFLE-FIELDS-SURVEY",
+            "description": "See English.ini",
+            "tt_description": "shuffle_fields_survey_desc"
+        }
+    ],
     "system-settings": [
     ],
     "project-settings": [
