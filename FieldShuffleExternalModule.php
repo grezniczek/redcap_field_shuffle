@@ -66,7 +66,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
                 $result = ActionTagParser::parse($misc);
                 foreach ($result["parts"] as $at) {
                     if ($at["text"] == $at_name && $at["param"]["type"] == "quoted-string") {
-                        $targets[$target]["original"] = array_map(function($s) { return trim($s); }, explode(",",trim($at["param"]["text"],"\"")));
+                        $targets[$target]["original"] = $this->parse_params($at["param"]["text"]);
                     }
                 }
             }
@@ -80,13 +80,30 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
             $sorted = array_merge($target_data["original"]);
             array_multisort($sort_by, SORT_NUMERIC, $sorted);
             $targets[$target]["shuffled"] = $sorted;
-            for ($i = 0; $i < count($sorted); $i++) {
-                $targets[$target]["map"][$target_data["original"][$i]] = $sorted[$i];
+            $original_flat = array_merge(...$targets[$target]["original"]);
+            $shuffled_flat = array_merge(...$targets[$target]["shuffled"]);
+            for ($i = 0; $i < count($original_flat); $i++) {
+                $targets[$target]["map"][$original_flat[$i]] = $shuffled_flat[$i];
             }
+            $targets[$target]["original_flat"] = $original_flat;
+            $targets[$target]["length"] = count($original_flat);
         }
         return array(
             "debug" => $this->getProjectSetting("debug") == true,
             "targets" => $targets,
         );
+    }
+
+
+    private function parse_params($params) {
+        $order = [];
+        $pattern = '/(?|([a-z][a-z0-9_]*)|\(([^()]+)\))/';
+        preg_match_all($pattern, $params, $matches);
+        for ($i = 0; $i < count($matches[0]); $i++) {
+            if (!empty($matches[1][$i])) {
+                $order[] = array_map(function($s) { return trim($s); }, explode(",",trim($matches[1][$i],"\"")));
+            } 
+        }
+        return $order;
     }
 }

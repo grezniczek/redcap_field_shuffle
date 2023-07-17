@@ -35,13 +35,26 @@ function init(data) {
 
 //#region Field Shuffling
 
+
+function concat_fields(arr) {
+    const groups = [];
+    for (const i of arr) {
+        groups.push(i.join('+'));
+    }
+    return groups.join('-');
+}
+
+function dissect_fields(s) {
+    return s.split(new RegExp('[+-]'));
+}
+
 function shuffleFields() {
     for (const target in config.targets) {
         const this_target = config.targets[target];
         const map = this_target.map;
         try {
-            let shuffled = this_target.shuffled.join('-');
-            let original = this_target.original.join('-');
+            let shuffled = concat_fields(this_target.shuffled);
+            let original = concat_fields(this_target.original);
             log('Shuffling "' + target + '": ' + original + ' -> ' + shuffled);
             const $target = $('input[type=text][name="' + target + '"]');
             if ($target.length != 1) {
@@ -49,13 +62,13 @@ function shuffleFields() {
                 continue;
             }
             if ($target.val() != '') {
-                shuffled = ($target.val() ?? '').toString();
-                log('Target field "' + target + '" already has a value: ' + shuffled);
-                const shuffledItems = shuffled.split('-');
-                if (shuffledItems.length == this_target.original.length) {
+                shuffled = '' + $target.val();
+                const shuffledItems = dissect_fields(shuffled);
+                log('Target field "' + target + '" already has a value: ' + shuffled, shuffledItems);
+                if (shuffledItems.length == this_target.length) {
                     // Apply stored order to map
                     for (let i = 0; i < shuffledItems.length; i++) {
-                        map[this_target.original[i]] = shuffledItems[i];
+                        map[this_target.original_flat[i]] = shuffledItems[i];
                     }
                     log('Updated map:', map);
                 }
@@ -68,7 +81,7 @@ function shuffleFields() {
                 $target.val(shuffled);
             }
             const orig = {};
-            for (const fieldName of this_target.original) {
+            for (const fieldName in this_target.map) {
                 log('Preparing field "' + fieldName +'"');
                 const $row = $('tr[sq_id="' + fieldName + '"]');
                 const $num = $row.find('td.questionnum');
@@ -88,7 +101,7 @@ function shuffleFields() {
                 }
             }
             log('Preparation complete:', orig);
-            for (const fieldName of this_target.original) {
+            for (const fieldName in this_target.map) {
                 const toField = map[fieldName];
                 log('Moving field "' + toField + '" -> ' + fieldName);
                 orig[toField].row.insertAfter(orig[fieldName].mark);
@@ -117,7 +130,7 @@ function shuffleFields() {
     if (!config.debug) return;
     let ln = '??';
     try {
-        const line = ((new Error).stack ?? '').split('\n')[2];
+        const line = ('' + (new Error).stack).split('\n')[2];
         const parts = line.split(':');
         ln = parts[parts.length - 2];
     }
@@ -131,7 +144,7 @@ function warn() {
     if (!config.debug) return;
     let ln = '??';
     try {
-        const line = ((new Error).stack ?? '').split('\n')[2];
+        const line = ('' + (new Error).stack).split('\n')[2];
         const parts = line.split(':');
         ln = parts[parts.length - 2];
     }
@@ -144,7 +157,7 @@ function warn() {
 function error() {
     let ln = '??';
     try {
-        const line = ((new Error).stack ?? '').split('\n')[2];
+        const line = ('' + (new Error).stack).split('\n')[2];
         const parts = line.split(':');
         ln = parts[parts.length - 2];
     }
