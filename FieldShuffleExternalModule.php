@@ -35,7 +35,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
 
     #region Hooks
 
-    function redcap_data_entry_form($project_id, $record = NULL, $instrument, $event_id, $group_id = NULL, $repeat_instance = 1) {
+    function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_DATAENTRY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = false;
@@ -44,7 +44,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
         }
     }
 
-    function redcap_survey_page($project_id, $record = NULL, $instrument, $event_id, $group_id = NULL, $survey_hash, $response_id = NULL, $repeat_instance = 1) {
+    function redcap_survey_page($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_SURVEY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = true;
