@@ -13,11 +13,7 @@
             "institution": "Ruhr-Universität Bochum"
         }
     ],
-    "framework-version": 8,
-    "permissions": [
-        "redcap_survey_page",
-        "redcap_data_entry_form"
-    ],
+    "framework-version": 12,
     "action-tags": [
         {
             "tag": "@SHUFFLE-FIELDS-DATAENTRY",
@@ -39,15 +35,5 @@
             "tt_name": "config_debug",
             "type": "checkbox"
         }
-    ],
-    "auth-ajax-actions": [
-    ],
-    "no-auth-ajax-actions": [
-    ],
-    "crons": [
-    ],
-    "compatibility": {
-        "php-version-min": "7.4.0",
-        "redcap-version-min": "11.4.4"
-     }
+    ]
 }

@@ -8,30 +8,8 @@ require_once "classes/ActionTagParser.php";
  */
 class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule {
 
-
     const AT_SHUFFLE_SURVEY = "@SHUFFLE-FIELDS-SURVEY";
     const AT_SHUFFLE_DATAENTRY = "@SHUFFLE-FIELDS-DATAENTRY";
-
-    #region Constructor and Instance Variables
-
-    /**
-     * @var InjectionHelper
-     */
-    public $ih = null;
-
-    /**
-     * EM Framework (tooling support)
-     * @var \ExternalModules\Framework
-     */
-    private $fw;
- 
-    function __construct() {
-        parent::__construct();
-        $this->fw = $this->framework;
-        $this->ih = InjectionHelper::init($this);
-    }
-
-    #endregion
 
     #region Hooks
 
@@ -39,7 +17,8 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_DATAENTRY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = false;
-            $this->ih->js("js/field-shuffle-em.js", true);
+            $ih = InjectionHelper::init($this);
+            $ih->js("js/field-shuffle-em.js", true);
             print "<script>REDCap.EM.RUB.FieldShuffle.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
         }
     }
@@ -48,7 +27,8 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_SURVEY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = true;
-            $this->ih->js("js/field-shuffle-em.js", true);
+            $ih = InjectionHelper::init($this);
+            $ih->js("js/field-shuffle-em.js", true);
             print "<script>REDCap.EM.RUB.FieldShuffle.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
         }
     }
@@ -80,12 +60,25 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
             $sorted = array_merge($target_data["original"]);
             array_multisort($sort_by, SORT_NUMERIC, $sorted);
             $targets[$target]["shuffled"] = $sorted;
+            // To make the mapping, we need to consider that the order given in 
+            // the AT parameter does not reflect the order of the fields in the form.
+            // Therefore, let's get the order of the fields in the form
             $original_flat = array_merge(...$targets[$target]["original"]);
+            $ordered_fields = [];
+            foreach ($Proj->forms[$form]["fields"] as $field => $_) {
+                if (in_array($field, $original_flat)) {
+                    $ordered_fields[$Proj->metadata[$field]["field_order"]] = $field;
+                }
+            }
+            sort($ordered_fields);
+            $ordered_fields = array_values($ordered_fields);
             $shuffled_flat = array_merge(...$targets[$target]["shuffled"]);
-            for ($i = 0; $i < count($original_flat); $i++) {
-                $targets[$target]["map"][$original_flat[$i]] = $shuffled_flat[$i];
+            // Now map based on actual order
+            for ($i = 0; $i < count($ordered_fields); $i++) {
+                $targets[$target]["map"][$ordered_fields[$i]] = $shuffled_flat[$i];
             }
             $targets[$target]["original_flat"] = $original_flat;
+            $targets[$target]["actual_flat"] = $ordered_fields;
             $targets[$target]["length"] = count($original_flat);
         }
         return array(

@@ -35,7 +35,6 @@ function init(data) {
 
 //#region Field Shuffling
 
-
 function concat_fields(arr) {
     const groups = [];
     for (const i of arr) {
