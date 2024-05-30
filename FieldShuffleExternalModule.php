@@ -40,7 +40,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
         $targets = [];
         $Proj = new \Project($pid);
         foreach ($Proj->forms[$form]["fields"] as $target => $_) {
-            $meta = $Proj->metadata[$target];
+            $meta = $Proj->metadata[$target] ?? [];
             $misc = $meta["misc"] ?? "";
             if (strpos($misc, $at_name) !== false) {
                 $result = ActionTagParser::parse($misc);
@@ -66,6 +66,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
             $original_flat = array_merge(...$targets[$target]["original"]);
             $ordered_fields = [];
             foreach ($Proj->forms[$form]["fields"] as $field => $_) {
+                $field = $this->framework->escape($field);
                 if (in_array($field, $original_flat)) {
                     $ordered_fields[$Proj->metadata[$field]["field_order"]] = $field;
                 }
