@@ -71,7 +71,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
                     $ordered_fields[$Proj->metadata[$field]["field_order"]] = $field;
                 }
             }
-            sort($ordered_fields);
+            ksort($ordered_fields);
             $ordered_fields = array_values($ordered_fields);
             $shuffled_flat = array_merge(...$targets[$target]["shuffled"]);
             // Now map based on actual order
