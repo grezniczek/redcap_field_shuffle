@@ -55,6 +55,7 @@ A demo project can be downloaded [here](https://raw.githubusercontent.com/grezni
 
 Version | Comment
 ------- | -------------
+1.1.2   | Major Bugfix: Field grouping would not work. Bug was introduced in version 1.1.1.
 1.1.1   | Bugfix: Recording of shuffled field now works when the order set in the action tag parameter does not reflect the actual order of fields on the form<br>Framework v12
 1.1.0   | New feature: Support for block shuffling.<br>Add action tag descriptions.
 1.0.3   | Lowered version requirements (REDCap 11.4.4, EM Framework 8).
