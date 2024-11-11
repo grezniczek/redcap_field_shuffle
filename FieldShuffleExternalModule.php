@@ -45,6 +45,7 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
             if (strpos($misc, $at_name) !== false) {
                 $result = ActionTagParser::parse($misc);
                 foreach ($result["parts"] as $at) {
+                    if (!is_array($at["param"])) continue;
                     if ($at["text"] == $at_name && $at["param"]["type"] == "quoted-string") {
                         $targets[$target]["original"] = $this->parse_params($at["param"]["text"]);
                     }
