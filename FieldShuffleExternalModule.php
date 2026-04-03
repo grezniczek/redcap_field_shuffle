@@ -16,6 +16,19 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
 
     #region Hooks
 
+    /**
+     * Injects field shuffle settings and JavaScript on data entry forms when the
+     * data entry action tag is present on the instrument.
+     *
+     * @param int|string $project_id REDCap project ID.
+     * @param string $record Record ID.
+     * @param string $instrument Instrument name.
+     * @param int|string $event_id Event ID.
+     * @param int|string|null $group_id DAG ID, if applicable.
+     * @param int|string|null $repeat_instance Repeat instance number, if applicable.
+     *
+     * @return void
+     */
     function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance)
     {
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_DATAENTRY);
@@ -25,6 +38,21 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
         }
     }
 
+    /**
+     * Injects field shuffle settings and JavaScript on survey pages when the
+     * survey action tag is present on the instrument.
+     *
+     * @param int|string $project_id REDCap project ID.
+     * @param string $record Record ID.
+     * @param string $instrument Instrument name.
+     * @param int|string $event_id Event ID.
+     * @param int|string|null $group_id DAG ID, if applicable.
+     * @param string $survey_hash Survey hash.
+     * @param int|string|null $response_id Survey response ID.
+     * @param int|string|null $repeat_instance Repeat instance number, if applicable.
+     *
+     * @return void
+     */
     function redcap_survey_page($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance)
     {
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_SURVEY);
@@ -36,6 +64,15 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
 
     #endregion
 
+    /**
+     * Loads the frontend script and emits the current shuffle configuration as
+     * JSON for client-side initialization.
+     *
+     * @param array<string, mixed> $settings Shuffle settings passed to the browser.
+     * @param bool $inline Whether to inject the JavaScript inline.
+     *
+     * @return void
+     */
     private function init_js($settings, $inline)
     {
         $ih = InjectionHelper::init($this);
@@ -52,6 +89,16 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
         print '<script>REDCap.EM.RUB.FieldShuffle.init(JSON.parse(document.getElementById("rub-fieldshuffle-settings").textContent));</script>';
     }
 
+    /**
+     * Builds shuffle settings for all tagged fields on a form, including the
+     * randomized order and the field-to-field mapping used by the frontend.
+     *
+     * @param int|string $pid REDCap project ID.
+     * @param string $form Instrument name.
+     * @param string $at_name Action tag name to search for.
+     *
+     * @return array<string, mixed> Module settings for the current page.
+     */
     private function get_settings($pid, $form, $at_name)
     {
         $targets = [];
@@ -107,6 +154,13 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
     }
 
 
+    /**
+     * Parses the action tag parameter string into ordered groups of field names.
+     *
+     * @param string $params Action tag parameter text.
+     *
+     * @return array<int, array<int, string>> Parsed field group order.
+     */
     private function parse_params($params)
     {
         $order = [];
