@@ -1,17 +1,22 @@
-<?php namespace RUB\FieldShuffleExternalModule;
+<?php
 
-class InjectionHelper {
+namespace DE\RUB\FieldShuffleExternalModule;
+
+class InjectionHelper
+{
 
     /** @var AbstractExternalModule $module */
     private $module = null;
     private $basePath;
 
-    private function __construct($module) {
+    private function __construct($module)
+    {
         $this->module = $module;
         $this->basePath = $module->getModulePath();
     }
 
-    public static function init($module) {
+    public static function init($module)
+    {
         if ($module->framework == null) {
             throw new \Exception("Not supported for framework v1 modules!");
         }
@@ -23,12 +28,12 @@ class InjectionHelper {
      * @param string $file The path of the JS file relative to the module folder without leading slash.
      * @param bool $inline Determines whether the script will be inlined or loaded as a separate resource.
      */
-    public function js($file, $inline = false) {
+    public function js($file, $inline = false)
+    {
         if ($inline) {
             $script = file_get_contents($this->basePath . $file);
             echo "<script type=\"text/javascript\">\n{$script}\n</script>";
-        }
-        else {
+        } else {
             echo '<script type="text/javascript" src="' . $this->module->framework->getUrl($file) . '"></script>';
         }
     }
@@ -38,12 +43,12 @@ class InjectionHelper {
      * @param string $file The path of the CSS file relative to the module folder.
      * @param bool $inline Determines whether the styles will be inlined or loaded as a separate resource.
      */
-    public function css($file, $inline = false) {
+    public function css($file, $inline = false)
+    {
         if ($inline) {
             $css = file_get_contents($this->basePath . $file);
             echo "<style>\n{$css}\n</style>\n";
-        }
-        else {
+        } else {
             $css = $this->module->framework->getUrl($file);
             $file = md5($file);
             echo "<script type=\"text/javascript\">

@@ -1,7 +1,7 @@
 {
     "name": "Field Shuffle",
     "tt_name": "module_name",
-    "namespace": "RUB\\FieldShuffleExternalModule",
+    "namespace": "DE\\RUB\\FieldShuffleExternalModule",
     "description": "A REDCap External Module that puts fields into a random order.",
     "tt_description": "module_desc",
     "documentation": "README.md",
@@ -13,7 +13,7 @@
             "institution": "Ruhr-Universität Bochum"
         }
     ],
-    "framework-version": 12,
+    "framework-version": 16,
     "action-tags": [
         {
             "tag": "@SHUFFLE-FIELDS-DATAENTRY",

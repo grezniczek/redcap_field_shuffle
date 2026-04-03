@@ -1,4 +1,6 @@
-<?php namespace RUB\FieldShuffleExternalModule;
+<?php
+
+namespace DE\RUB\FieldShuffleExternalModule;
 
 require_once "classes/InjectionHelper.php";
 require_once "classes/ActionTagParser.php";
@@ -6,37 +8,52 @@ require_once "classes/ActionTagParser.php";
 /**
  * ExternalModule class for Field Shuffle.
  */
-class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule {
+class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
+{
 
     const AT_SHUFFLE_SURVEY = "@SHUFFLE-FIELDS-SURVEY";
     const AT_SHUFFLE_DATAENTRY = "@SHUFFLE-FIELDS-DATAENTRY";
 
     #region Hooks
 
-    function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance) {
+    function redcap_data_entry_form($project_id, $record, $instrument, $event_id, $group_id, $repeat_instance)
+    {
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_DATAENTRY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = false;
-            $ih = InjectionHelper::init($this);
-            $ih->js("js/field-shuffle-em.js", true);
-            print "<script>REDCap.EM.RUB.FieldShuffle.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
+            $this->init_js($settings, true);
         }
     }
 
-    function redcap_survey_page($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance) {
+    function redcap_survey_page($project_id, $record, $instrument, $event_id, $group_id, $survey_hash, $response_id, $repeat_instance)
+    {
         $settings = $this->get_settings($project_id, $instrument, self::AT_SHUFFLE_SURVEY);
         if (count($settings["targets"])) {
             $settings["isSurvey"] = true;
-            $ih = InjectionHelper::init($this);
-            $ih->js("js/field-shuffle-em.js", true);
-            print "<script>REDCap.EM.RUB.FieldShuffle.init(".json_encode($settings, JSON_UNESCAPED_UNICODE).");</script>";
+            $this->init_js($settings, true);
         }
     }
 
     #endregion
 
+    private function init_js($settings, $inline)
+    {
+        $ih = InjectionHelper::init($this);
+        $ih->js("js/field-shuffle-em.js", $inline);
+        print '<script type="application/json" id="rub-fieldshuffle-settings">' .
+            json_encode(
+                $settings,
+                JSON_UNESCAPED_UNICODE
+                    | JSON_HEX_TAG
+                    | JSON_HEX_AMP
+                    | JSON_HEX_APOS
+                    | JSON_HEX_QUOT
+            ) . '</script>';
+        print '<script>REDCap.EM.RUB.FieldShuffle.init(JSON.parse(document.getElementById("rub-fieldshuffle-settings").textContent));</script>';
+    }
 
-    private function get_settings($pid, $form, $at_name) {
+    private function get_settings($pid, $form, $at_name)
+    {
         $targets = [];
         $Proj = new \Project($pid);
         foreach ($Proj->forms[$form]["fields"] as $target => $_) {
@@ -90,14 +107,17 @@ class FieldShuffleExternalModule extends \ExternalModules\AbstractExternalModule
     }
 
 
-    private function parse_params($params) {
+    private function parse_params($params)
+    {
         $order = [];
         $pattern = '/(?|([a-z][a-z0-9_]*)|\(([^()]+)\))/';
         preg_match_all($pattern, $params, $matches);
         for ($i = 0; $i < count($matches[0]); $i++) {
             if (!empty($matches[1][$i])) {
-                $order[] = array_map(function($s) { return trim($s); }, explode(",",trim($matches[1][$i],"\"")));
-            } 
+                $order[] = array_map(function ($s) {
+                    return trim($s);
+                }, explode(",", trim($matches[1][$i], "\"")));
+            }
         }
         return $order;
     }

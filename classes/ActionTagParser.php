@@ -1,6 +1,9 @@
-<?php namespace RUB\FieldShuffleExternalModule;
+<?php
 
-class ActionTagParser {
+namespace DE\RUB\FieldShuffleExternalModule;
+
+class ActionTagParser
+{
 
     /** @var string Escape character */
     const esc = "\\";
@@ -15,240 +18,240 @@ class ActionTagParser {
     /** @var string Valid character after an action tag name (if not end of string) */
     const at_valid_post = " \t=({\n\r";
     /** @var array Number characters 0-9 */
-    const at_numbers = ["0","1","2","3","4","5","6","7","8","9"];
+    const at_numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
     const at_info = array(
         "@APPUSERNAME-APP" => array(
             "param" => ["none"],
             "scope" => ["mobile-app"],
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
         "@BARCODE-APP" => array(
             "param" => ["none"],
             "scope" => ["mobile-app"],
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
         "@CALCDATE" => array(
             "param" => ["args"],
-            "scope" => ["mobile-app","survey","data-entry","calc","import"],
+            "scope" => ["mobile-app", "survey", "data-entry", "calc", "import"],
             "warn-when-inside" => ["@IF"],
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
         "@CALCTEXT" => array(
             "param" => ["args"],
-            "scope" => ["mobile-app","survey","data-entry","calc","import"],
+            "scope" => ["mobile-app", "survey", "data-entry", "calc", "import"],
             "warn-when-inside" => ["@IF"],
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
         "@CHARLIMIT" => array(
-            "param" => ["integer","quoted-string"],
+            "param" => ["integer", "quoted-string"],
             "supports-piping" => false,
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "not-together-with" => ["@WORDLIMIT"],
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
         "@DEFAULT" => array(
             "param" => ["quoted-string"],
             "supports-piping" => true,
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["text","textarea"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["text", "textarea"],
         ),
         "@DOWNLOAD-COUNT" => array(
             "param" => ["args"],
-            "scope" => ["survey","data-entry"],
+            "scope" => ["survey", "data-entry"],
             "args-limit" => "same-scope-field",
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
         "@FORCE-MINMAX" => array(
             "param" => ["none"],
-            "scope" => ["survey","data-entry","import"],
+            "scope" => ["survey", "data-entry", "import"],
             "field-types" => ["text"],
         ),
         "@HIDDEN" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@HIDDEN-APP" => array(
             "param" => ["none"],
             "scope" => ["mobile-app"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@HIDDEN-FORM" => array(
             "param" => ["none"],
             "scope" => ["data-entry"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@HIDDEN-PDF" => array(
             "param" => ["none"],
             "scope" => ["pdf"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@HIDDEN-SURVEY" => array(
             "param" => ["none"],
             "scope" => ["survey"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@HIDEBUTTON" => array(
             "param" => ["none"],
-            "scope" => ["survey","data-entry"],
+            "scope" => ["survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@HIDECHOICE" => array(
             "param" => ["quoted-string"],
-            "scope" => ["survey","data-entry"],
-            "field-types" => ["checkbox","radio","select","truefalse","yesno"],
+            "scope" => ["survey", "data-entry"],
+            "field-types" => ["checkbox", "radio", "select", "truefalse", "yesno"],
         ),
         "@HIDDEN" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@IF" => array(
             "param" => ["args"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@INLINE" => array(
-            "param" => ["none","args"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "param" => ["none", "args"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["file"],
         ),
         "@LANGUAGE-CURRENT-FORM" => array(
             "param" => ["none"],
             "scope" => ["data-entry"],
-            "field-types" => ["radio","select","text"],
+            "field-types" => ["radio", "select", "text"],
         ),
         "@LANGUAGE-CURRENT-SURVEY" => array(
             "param" => ["none"],
             "scope" => ["survey"],
-            "field-types" => ["radio","select","text"],
+            "field-types" => ["radio", "select", "text"],
         ),
         "@LANGUAGE-FORCE" => array(
             "param" => ["quoted-string"],
-            "scope" => ["survey","data-entry"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["survey", "data-entry"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
             "max-per-form" => 1,
         ),
         "@LANGUAGE-FORCE-FORM" => array(
             "param" => ["quoted-string"],
             "scope" => ["data-entry"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
             "max-per-form" => 1,
         ),
         "@LANGUAGE-FORCE-SURVEY" => array(
             "param" => ["quoted-string"],
             "scope" => ["survey"],
-            "field-types" => ["calc","checkbox","descriptive","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["calc", "checkbox", "descriptive", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
             "max-per-form" => 1,
         ),
         "@LANGUAGE-SET" => array(
             "param" => ["none"],
-            "scope" => ["survey","data-entry"],
-            "field-types" => ["radio","select"],
+            "scope" => ["survey", "data-entry"],
+            "field-types" => ["radio", "select"],
         ),
         "@LATITUDE" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@LONGITUDE" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@MAXCHECKED" => array(
-            "param" => ["integer","quoted-string"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "param" => ["integer", "quoted-string"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["checkbox"],
         ),
         "@MAXCHOICE" => array(
             "param" => ["args"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["checkbox","radio","select"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["checkbox", "radio", "select"],
         ),
         "@MAXCHOICE-SURVEY-COMPLETE" => array(
             "param" => ["args"],
             "scope" => ["survey"],
-            "field-types" => ["checkbox","radio","select"],
+            "field-types" => ["checkbox", "radio", "select"],
         ),
         "@NOMISSING" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["checkbox","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["checkbox", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@NONEOFTHEABOVE" => array(
-            "param" => ["integer","unquoted-string","quoted-string"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "param" => ["integer", "unquoted-string", "quoted-string"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["checkbox"],
         ),
         "@NOW" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@NOW-SERVER" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@NOW-UTC" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@PASSWORDMASK" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@PLACEHOLDER" => array(
             "param" => ["quoted-string"],
             "supports-piping" => true,
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["text","textarea"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["text", "textarea"],
         ),
         "@PREFILL" => array(
             "param" => ["quoted-string"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["checkbox","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["checkbox", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
             "deprecated" => true,
             "equivalent-to" => "@SETVALUE",
         ),
         "@RANDOMORDER" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["checkbox","radio","select","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["checkbox", "radio", "select", "truefalse", "yesno"],
         ),
         "@READONLY" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["checkbox","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["checkbox", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@READONLY-APP" => array(
             "param" => ["none"],
             "scope" => ["mobile-app"],
-            "field-types" => ["checkbox","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["checkbox", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@READONLY-FORM" => array(
             "param" => ["none"],
             "scope" => ["data-entry"],
-            "field-types" => ["checkbox","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["checkbox", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@READONLY-SURVEY" => array(
             "param" => ["none"],
             "scope" => ["survey"],
-            "field-types" => ["checkbox","file","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "field-types" => ["checkbox", "file", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@RICHTEXT" => array(
             "param" => ["none"],
-            "scope" => ["survey","data-entry"],
+            "scope" => ["survey", "data-entry"],
             "field-types" => ["textarea"],
         ),
         "@SETVALUE" => array(
             "param" => ["quoted-string"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["checkbox","radio","select","slider","sql","text","textarea","truefalse","yesno"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["checkbox", "radio", "select", "slider", "sql", "text", "textarea", "truefalse", "yesno"],
         ),
         "@SYNC-APP" => array(
             "param" => ["none"],
@@ -257,30 +260,30 @@ class ActionTagParser {
         ),
         "@TODAY" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@TODAY-SERVER" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@TODAY-UTC" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "field-types" => ["text"],
         ),
         "@USERNAME" => array(
             "param" => ["none"],
-            "scope" => ["mobile-app","survey","data-entry"],
-            "field-types" => ["radio","select","sql","text","textarea"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
+            "field-types" => ["radio", "select", "sql", "text", "textarea"],
         ),
         "@WORDLIMIT" => array(
-            "param" => ["integer","quoted-string"],
+            "param" => ["integer", "quoted-string"],
             "supports-piping" => false,
-            "scope" => ["mobile-app","survey","data-entry"],
+            "scope" => ["mobile-app", "survey", "data-entry"],
             "not-together-with" => ["@CHARLIMIT"],
-            "field-types" => ["text","textarea"],
+            "field-types" => ["text", "textarea"],
         ),
     );
 
@@ -291,7 +294,8 @@ class ActionTagParser {
      * @param string $s The string to be parsed
      * @return array
      */
-    public static function parse($orig) {
+    public static function parse($orig)
+    {
 
         #region State
 
@@ -361,8 +365,7 @@ class ActionTagParser {
                         $escaped = false;
                         $prev = $c;
                         continue;
-                    }
-                    else {
+                    } else {
                         // No. Let's turn on escape mode and continue
                         $escaped = true;
                         $prev = $c;
@@ -378,15 +381,14 @@ class ActionTagParser {
                         $escaped = false;
                         $prev = $c;
                         continue;
-                    }
-                    else {
+                    } else {
                         // A proper tag name must start with a valid character and be at the start of the string or 
                         // there must be a whitespace/line break char in front of it 
                         if (
-                            (mb_strpos(self::at_valid_first_last, $next) === false) 
-                            || 
+                            (mb_strpos(self::at_valid_first_last, $next) === false)
+                            ||
                             !($prev === "" || mb_strpos(self::at_valid_pre, $prev) !== false)
-                           ) {
+                        ) {
                             // Cannot be an action tag. Add the previous segment, this non-starter as an annotated segment, and start a new segment
                             if ($seg_text != "") {
                                 $parts[] = array(
@@ -409,8 +411,7 @@ class ActionTagParser {
                             $seg_start = $pos + 1;
                             $prev = $c;
                             continue;
-                        }
-                        else {
+                        } else {
                             // This is an action tag name candidate
                             $in_tag_name = true;
                             $outside_tag = false;
@@ -457,8 +458,7 @@ class ActionTagParser {
                     // We are done. We are overly specific here. This could be handled by the previous else block (with condition removed)
                     break;
                 }
-            }
-            else if ($in_tag_name) {
+            } else if ($in_tag_name) {
                 // Is the character a valid after-tag-name character (or are we at the end of the string)?
                 if ($c === "" || mb_strpos(self::at_valid_post, $c) !== false) {
                     $at_name_end = $pos - 1;
@@ -473,8 +473,7 @@ class ActionTagParser {
                             "end" => $at_name_end,
                             "text" => $at_name,
                         );
-                    }
-                    else {
+                    } else {
                         // Not a valid name, add as ots part
                         $parts[] = array(
                             "type" => "ots",
@@ -489,8 +488,7 @@ class ActionTagParser {
                         // We are done. Add the tag as a part.
                         $parts[] = $tag;
                         break;
-                    }
-                    else {
+                    } else {
                         // A valid tag name has been found. A parameter could follow.
                         // Switch to parameter mode
                         $in_tag_name = false;
@@ -655,7 +653,7 @@ class ActionTagParser {
                 }
             }
             #endregion
-            
+
             #region Parameter parsing ...
             // Integer parameter
             if ($in_param == "integer") {
@@ -680,8 +678,7 @@ class ActionTagParser {
                     $seg_text = "";
                     if ($c === "") {
                         break;
-                    }
-                    else {
+                    } else {
                         $pos -= 1;
                         continue;
                     }
@@ -723,8 +720,7 @@ class ActionTagParser {
                     $seg_text = "";
                     if ($c === "") {
                         break;
-                    }
-                    else {
+                    } else {
                         $pos -= 1;
                         continue;
                     }
@@ -761,8 +757,7 @@ class ActionTagParser {
                         $escaped = false;
                         $prev = $c;
                         continue;
-                    }
-                    else {
+                    } else {
                         $escaped = true;
                         continue;
                     }
@@ -774,8 +769,7 @@ class ActionTagParser {
                         $param_text .= $c;
                         $escaped = false;
                         $prev = $c;
-                    }
-                    else {
+                    } else {
                         // End of parameter reached
                         $param_text .= $c;
                         $tag["param"] = array(
@@ -832,8 +826,7 @@ class ActionTagParser {
                         $escaped = false;
                         $prev = $c;
                         continue;
-                    }
-                    else {
+                    } else {
                         // We still add the escape character, to be parsed by the JSON decoder
                         $param_text .= $c;
                         $escaped = true;
@@ -857,8 +850,7 @@ class ActionTagParser {
                         $prev = $c;
                         $escaped = false;
                         continue;
-                    }
-                    else {
+                    } else {
                         // This ends the string literal
                         $in_string_literal = false;
                         $param_text .= $c;
@@ -917,8 +909,7 @@ class ActionTagParser {
                         $json_error = null;
                         try {
                             $_ = json_decode($param_text, true, 512, JSON_THROW_ON_ERROR);
-                        }
-                        catch (\Throwable $ex) {
+                        } catch (\Throwable $ex) {
                             $valid_json = false;
                             $json_error = $ex->getMessage();
                         }
@@ -996,8 +987,7 @@ class ActionTagParser {
                         $escaped = false;
                         $prev = $c;
                         continue;
-                    }
-                    else {
+                    } else {
                         $escaped = true;
                         continue;
                     }
@@ -1020,16 +1010,14 @@ class ActionTagParser {
                             $prev = $c;
                             $escaped = false;
                             continue;
-                        }
-                        else {
+                        } else {
                             // This ends the string literal
                             $in_string_literal = false;
                             $param_text .= $c;
                             $prev = $c;
                             continue;
                         }
-                    }
-                    else {
+                    } else {
                         // Add it
                         $param_text .= $c;
                         $prev = $c;
@@ -1113,7 +1101,5 @@ class ActionTagParser {
             "orig" => $orig,
             "parts" => $parts,
         );
-
     }
-
 }

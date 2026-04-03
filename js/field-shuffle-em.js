@@ -55,7 +55,7 @@ function shuffleFields() {
             let shuffled = concat_fields(this_target.shuffled);
             let original = concat_fields(this_target.original);
             log('Shuffling "' + target + '": ' + original + ' -> ' + shuffled);
-            const $target = $('input[type=text][name="' + target + '"]');
+            const $target = $('input[type=text][name="' + $.escapeSelector(target) + '"]');
             if ($target.length != 1) {
                 warn('Target field "' + target + '" not found.');
                 continue;
@@ -82,7 +82,7 @@ function shuffleFields() {
             const orig = {};
             for (const fieldName in this_target.map) {
                 log('Preparing field "' + fieldName +'"');
-                const $row = $('tr[sq_id="' + fieldName + '"]');
+                const $row = $('tr[sq_id="' + $.escapeSelector(fieldName) + '"]');
                 const $num = $row.find('td.questionnum');
                 // Add hidden marker row before and save questionnum
                 const $mark = $('<tr></tr>');
