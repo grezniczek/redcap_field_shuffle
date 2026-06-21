@@ -1,6 +1,8 @@
 # Field Shuffle
 
-A REDCap External Module that puts fields into a random order.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20782543.svg)](https://doi.org/10.5281/zenodo.20782543)
+
+Field Shuffle is a REDCap External Module that puts fields into a random order.
 
 ## Installation
 
@@ -55,6 +57,7 @@ A demo project can be downloaded [here](https://raw.githubusercontent.com/grezni
 
 Version | Comment
 ------- | -------------
+1.1.5   | Security hardening in helper class.
 1.1.4   | Security hardening for potential future expansions<br>Namespace change<br>Framework v16
 1.1.3   | Minor Bugfix: Prevent PHP8 error when the action tag is used without any parameters.
 1.1.2   | Major Bugfix: Field grouping would not work. Bug was introduced in version 1.1.1.
@@ -64,3 +67,41 @@ Version | Comment
 1.0.2   | EM renamed to 'Field Shuffle'.
 1.0.1   | Bugfix: Question numbers are now in correct order.
 1.0.0   | Initial release.
+
+## How to cite this work
+
+If you use this external module for a project that generates a research output, please cite this software in addition to [citing REDCap](https://projectredcap.org/resources/citations/). You can do so using the APA referencing style as below:
+
+> Rezniczek, G. A. (2026). Field Shuffle (REDCap External Module) [Computer software]. https://doi.org/10.5281/zenodo.20782543
+
+Or by adding this reference to your BibTeX database:
+
+```bibtex
+@software{Rezniczek_FieldShuffle_REDCap_EM_2026,
+author = {Rezniczek, Günther A.},
+doi = {10.5281/zenodo.20782543},
+title = {{Field Shuffle (REDCap External Module)}},
+url = {https://github.com/grezniczek/redcap_field_shuffle},
+version = {1.1.5},
+year = {2026}
+}
+```
+
+These instructions are also available in [GitHub](https://github.com/grezniczek/redcap_field_shuffle) under 'Cite This Repository'.
+
+## Support this work
+
+If you find this software useful, you can [buy me a coffee or a beer](https://www.paypal.com/donate/?hosted_button_id=6VRC2JFRCBGRN). Your support is purely voluntary and helps me continue improving this project. Of course, you are not entitled to any special benefits—except my silent appreciation while enjoying the drink! 🍻☕
+
+You can use the link or the QR code below to make a donation via PayPal.
+
+![PayPal QR Code](images/qr-paypal.png)
+
+_Please note that donations are purely voluntary and not tax-deductible._
+
+
+---
+
+**Disclaimer**
+
+Parts of this documentation and release polish were developed with assistance from OpenAI's ChatGPT/Codex to support clarity, consistency, and ease of use for REDCap project designers. Final content has been reviewed and adapted by the maintainer to reflect the specific functionality and standards of the *Field Shuffle* external module.
