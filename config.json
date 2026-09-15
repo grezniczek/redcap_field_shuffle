@@ -24,6 +24,21 @@
             "tag": "@SHUFFLE-FIELDS-SURVEY",
             "description": "See English.ini",
             "tt_description": "shuffle_fields_survey_desc"
+        },
+        {
+            "tag": "@SHUFFLE-FIELDS-PAGED",
+            "description": "See English.ini",
+            "tt_description": "shuffle_fields_paged_desc"
+        },
+        {
+            "tag": "@SHUFFLE-FIELDS-PAGED-SINGLE",
+            "description": "See English.ini",
+            "tt_description": "shuffle_fields_paged_single_desc"
+        },
+        {
+            "tag": "@SHUFFLE-FIELDS-SH",
+            "description": "See English.ini",
+            "tt_description": "shuffle_fields_sh_desc"
         }
     ],
     "system-settings": [

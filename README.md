@@ -51,12 +51,55 @@ When the survey (or data entry form) loads, the question order is shuffled and t
 
 When a survey page is rendered that already has (valid) data in the field holding the field order, then this order will be replicated. If the stored data is invalid, then no field reordering will occur.
 
+### Multi-page survey shuffling
+
+The module also provides two survey-only modes that reorder effective instrument metadata before REDCap builds its survey pages. REDCap therefore remains responsible for navigation, validation, branching logic, calculations, piping, Save & Return Later, and survey completion.
+
+#### Fixed page structure: `@SHUFFLE-FIELDS-PAGED`
+
+Use `@SHUFFLE-FIELDS-PAGED` to shuffle complete field definitions among selected field slots while keeping section-header positions and non-selected fields fixed:
+
+> `@SHUFFLE-FIELDS-PAGED="q1,q2,q3,q4,q5,q6"`
+
+Every configured item must be one field. Parenthesized groups and `~` are not supported in this mode. Fields may be scattered across multiple pages.
+
+#### One shuffle unit per page: `@SHUFFLE-FIELDS-PAGED-SINGLE`
+
+Use `@SHUFFLE-FIELDS-PAGED-SINGLE` to make each configured field or parenthesized group one survey page:
+
+> `@SHUFFLE-FIELDS-PAGED-SINGLE="q1,(q2,q3~q4),q5,q6"`
+
+Top-level items are shuffled. Within parentheses, comma joins fixed-order subsequences and `~` shuffles fields within one subsequence. In the example, `q2` remains first while `q3` and `q4` are shuffled. The whole parenthesized unit stays together on one page.
+
+Fixed fields split a configuration into contiguous regions. Units are shuffled independently within each region so fixed fields remain in place and differently sized units cannot cross a fixed-field boundary. Grouped fields must be contiguous in the original instrument metadata.
+
+Add `@HIDDEN-SURVEY` to the order-storage field. In `PAGED-SINGLE` mode the module omits such a control field from the request-local survey layout while continuing to store its value server-side; this prevents it from creating a blank page.
+
+#### Page headers
+
+Place `@SHUFFLE-FIELDS-SH` on any field in a `PAGED-SINGLE` unit to override that unit's page header:
+
+> `@SHUFFLE-FIELDS-SH="Question"`
+
+Normal REDCap piping is supported, including an MLM-translated field label:
+
+> `@SHUFFLE-FIELDS-SH="[question_header:label]"`
+
+If several fields in one unit carry the tag, the first in original metadata order wins and the module logs a warning. Without an override, the first natural section header in original metadata order is used. If neither exists, a blank page-breaking header is generated. Live piping is not supported.
+
+#### Persistence and validation
+
+The tagged Text Box field remains the source of truth. An empty field receives one generated order; a populated valid field is replayed exactly, including orders supplied externally. Singleton units are separated with `-`, fixed group subsequences with `+`, and realized within-subsequence shuffles with `~`.
+
+Paged configurations are validated before use. Missing or duplicate fields, malformed grammar, overlapping configurations, non-contiguous groups, cross-region stored orders, and stale stored values are rejected and logged. An invalid stored order is never silently replaced with a new randomization.
+
 A demo project can be downloaded [here](https://raw.githubusercontent.com/grezniczek/redcap_field_shuffle/main/demo/FieldShuffleDemo.REDCap.xml) (file hosted on GitHub).
 
 ## Changelog
 
 Version | Comment
 ------- | -------------
+Unreleased | Add server-side `@SHUFFLE-FIELDS-PAGED` and `@SHUFFLE-FIELDS-PAGED-SINGLE` modes, internal `~` shuffling, and `@SHUFFLE-FIELDS-SH` page headers.
 1.1.5   | Security hardening in helper class.
 1.1.4   | Security hardening for potential future expansions<br>Namespace change<br>Framework v16
 1.1.3   | Minor Bugfix: Prevent PHP8 error when the action tag is used without any parameters.
