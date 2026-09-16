@@ -19,41 +19,55 @@ A **debug** mode can be enabled in the module's project settings. When enabled, 
 
 ## Usage
 
-The module's actions are controlled by **Action Tags**:
+The module provides five action tags:
 
-- **`@SHUFFLE-FIELDS-SURVEY`** will randomize the question order on survey pages. Please note that all fields that are shuffled as well as the field that holds the displayed order **must** be on the same survey page.
+| Action tag | Surface | Purpose |
+| --- | --- | --- |
+| `@SHUFFLE-FIELDS-SURVEY` | Survey | Shuffle fields or fixed-order blocks within one already-rendered survey page. |
+| `@SHUFFLE-FIELDS-DATAENTRY` | Data entry | Shuffle fields or fixed-order blocks on a data entry form, typically to reproduce a participant's stored survey order. |
+| `@SHUFFLE-FIELDS-PAGED` | Survey | Shuffle individual fields among selected positions while preserving the existing page structure. |
+| `@SHUFFLE-FIELDS-PAGED-SINGLE` | Survey | Shuffle fields or field groups as units and make every realized unit one survey page. |
+| `@SHUFFLE-FIELDS-SH` | Survey | Optionally override the page header for a `PAGED-SINGLE` unit. This companion tag does not generate or store an order. |
 
-- **`@SHUFFLE-FIELDS-DATAENTRY`** will randomize the question order on data entry pages. This may be useful to see the questions in the same order as viewed by a survey participant. In this case, make sure that both action tags are applied to the same field (holding the order) with the exact same parameters.
+### Order-storage field
 
-Both action tags should be applied to the field that should hold the question order. It must be a field of type _Text Box_ without any validation. It is recommended to apply the `@HIDDEN-SURVEY` and the `@READONLY` action tags to this field as well.
+The first four tags produce a realized order. Apply the selected shuffle tag to the field that should store that order. The storage field must be an unvalidated _Text Box_ field and must not be included in its own shuffle expression. Each shuffle tag requires a quoted expression identifying the controlled fields; the supported grouping syntax depends on the selected mode.
 
-The `@SHUFFLE-FIELDS-SURVEY` and `@SHUFFLE-FIELDS-DATAENTRY` both take a comma-separated list (in quotes) of the variable names of the fields whose order should be randomized.
+It is recommended to add REDCap's `@HIDDEN-SURVEY` and `@READONLY` action tags to the storage field. `@HIDDEN-SURVEY` is particularly important for `@SHUFFLE-FIELDS-PAGED-SINGLE`: the module omits a hidden storage field from the request-local survey layout so it cannot create an otherwise blank page.
 
-For example, let's assume a survey with four questions, _q1_, _q2_, _q3_, and _q4_. To randomize them, add  
-> `@SHUFFLE-FIELDS-SURVEY="q1,q2,q3,q4"`  
-> `@HIDDEN-SURVEY @READONLY`
+### Within-page shuffling
 
-to another field, e.g., _displayed_order_. 
+`@SHUFFLE-FIELDS-SURVEY` randomizes fields on a survey page. The storage field and every shuffled field must be on that same page.
+
+`@SHUFFLE-FIELDS-DATAENTRY` provides equivalent behavior on data entry forms. To reproduce the order seen by a survey participant, place both within-page tags on the same storage field with exactly the same expression.
+
+For example, to randomize four survey questions, _q1_ through _q4_, add the following to another field, such as _displayed_order_:
+
+```text
+@SHUFFLE-FIELDS-SURVEY="q1,q2,q3,q4"
+@HIDDEN-SURVEY @READONLY
+```
 
 ### Block shuffling
 
-Fields can be grouped with parentheses. Grouped fields will be shuffled as a block, i.e. the first field in the block will be shuffled with all other standalone/first block fields and the other fields in the block will be inserted after the first field in the given order.
+The two within-page tags support fixed-order blocks. Group fields with parentheses to shuffle them as one unit. The fields inside each block remain in the specified order.
 
-For example, let's assume there are seven questions, _b1_ to _b7_, but the questions 1-3 and 6-7 should always stay together. To randomize them, add
-> `@SHUFFLE-FIELDS-SURVEY="(b1,b2,b3),b4,b5,(b6,b7)"`  
-> `@HIDDEN-SURVEY @READONLY`
+For example, if questions _b1_ through _b3_ and _b6_ through _b7_ should stay together, add the following to the order-storage field:
 
-to the text field that will capture the order of the actual displayed fields. Shuffle results might then be: _b5-b1+b2+b3-b6+b7-b4_ or _b6+b7-b1+b2+b3-b5-b4_. Plus is used as in-block delimiter instead of the hyphen.  
-It must be ensured that parentheses are matched and not nested. Field names and blocks must be separated by commas, as shown in the example above.
+```text
+@SHUFFLE-FIELDS-SURVEY="(b1,b2,b3),b4,b5,(b6,b7)"
+@HIDDEN-SURVEY @READONLY
+```
 
+Shuffle results might then be _b5-b1+b2+b3-b6+b7-b4_ or _b6+b7-b1+b2+b3-b5-b4_. The stored order uses `+` as the in-block delimiter instead of `-`. Parentheses must be matched and cannot be nested. Separate field names and blocks with commas, as shown above.
 
-When the survey (or data entry form) loads, the question order is shuffled and the displayed field order is entered into the field with the action tag. On survey pages with field numbers, the original order is preserved.
+When the survey or data entry form loads, the realized field order is written to the storage field. On surveys, question-number cells remain in their display positions, so automatic numbering stays sequential after the shuffle.
 
 When a survey page is rendered that already has (valid) data in the field holding the field order, then this order will be replicated. If the stored data is invalid, then no field reordering will occur.
 
 ### Multi-page survey shuffling
 
-The module also provides two survey-only modes that reorder effective instrument metadata before REDCap builds its survey pages. REDCap therefore remains responsible for navigation, validation, branching logic, calculations, piping, Save & Return Later, and survey completion.
+The module also provides two survey-only modes that reorder effective instrument metadata before REDCap builds its survey pages. Enable REDCap's survey setting to display each section on a separate page when using these modes. REDCap remains responsible for navigation, validation, branching logic, calculations, piping, Save & Return Later, and survey completion.
 
 #### Fixed page structure: `@SHUFFLE-FIELDS-PAGED`
 
@@ -85,13 +99,13 @@ Normal REDCap piping is supported, including an MLM-translated field label:
 
 > `@SHUFFLE-FIELDS-SH="[question_header:label]"`
 
-If several fields in one unit carry the tag, the first in original metadata order wins and the module logs a warning. Without an override, the first natural section header in original metadata order is used. If neither exists, a blank page-breaking header is generated. Live piping is not supported.
+If several fields in one unit carry the tag, the first in original metadata order wins and the module logs a warning. Without an override, the first natural section header in original metadata order is used. If neither exists, a blank page-breaking header is generated. The tag is ignored outside a `PAGED-SINGLE` unit. Live piping is not supported.
 
 #### Persistence and validation
 
 The tagged Text Box field remains the source of truth. An empty field receives one generated order; a populated valid field is replayed exactly, including orders supplied externally. Singleton units are separated with `-`, fixed group subsequences with `+`, and realized within-subsequence shuffles with `~`.
 
-Paged configurations are validated before use. Missing or duplicate fields, malformed grammar, overlapping configurations, non-contiguous groups, cross-region stored orders, and stale stored values are rejected and logged. An invalid stored order is never silently replaced with a new randomization.
+Paged configurations are validated before use. Missing or duplicate fields, malformed grammar, overlapping configurations, non-contiguous groups, cross-region stored orders, and stale stored values are rejected and logged. Fields controlled by `@SHUFFLE-FIELDS-PAGED-SINGLE` cannot also be controlled by `@SHUFFLE-FIELDS-SURVEY`. An invalid stored order is never silently replaced with a new randomization.
 
 A demo project can be downloaded [here](https://raw.githubusercontent.com/grezniczek/redcap_field_shuffle/main/demo/FieldShuffleDemo.REDCap.xml) (file hosted on GitHub).
 
