@@ -1,0 +1,27 @@
+{
+  "creators": [
+    {
+      "name": "Rezniczek, Günther A.",
+      "orcid": "0000-0002-0852-6002",
+      "affiliation": "St. Elisabeth Gruppe GmbH, Klinikum der Ruhr-Universität Bochum, Herne, Germany"
+    }
+  ],
+  "title": "Field Shuffle (REDCap External Module)",
+  "description": "Field Shuffle is a REDCap External Module for randomizing the display order of fields on REDCap survey pages, data entry forms, and native multi-page surveys. It stores the realized order in a designated text field, replays valid stored orders, and supports independent fields, fixed-order blocks, fixed page structures, one-unit-per-page randomization, internal subgroup shuffling, and page-header overrides.",
+  "access_right": "open",
+  "keywords": [
+    "REDCap",
+    "REDCap External Module",
+    "field randomization",
+    "question order",
+    "multi-page survey",
+    "survey",
+    "data entry",
+    "clinical research",
+    "registry"
+  ],
+  "license": "mit",
+  "upload_type": "software",
+  "publisher": "GitHub",
+  "language": "eng"
+}
