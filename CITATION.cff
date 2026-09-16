@@ -12,10 +12,11 @@ title: "Field Shuffle (REDCap External Module)"
 
 abstract: >-
   Field Shuffle is a REDCap External Module for randomizing the display order
-  of fields on REDCap survey pages and data entry forms. It stores the
-  displayed order in a designated text field, can replay an already stored
-  order, and supports shuffling individual fields or grouped blocks of fields
-  through the @SHUFFLE-FIELDS-SURVEY and @SHUFFLE-FIELDS-DATAENTRY action tags.
+  of fields on REDCap survey pages, data entry forms, and native multi-page
+  surveys. It stores the realized order in a designated text field, replays
+  valid stored orders, and supports independent fields, fixed-order blocks,
+  fixed page structures, one-unit-per-page randomization, internal subgroup
+  shuffling, and page-header overrides.
 
 authors:
   - family-names: "Rezniczek"
@@ -28,6 +29,7 @@ keywords:
   - REDCap External Module
   - field randomization
   - question order
+  - multi-page survey
   - survey
   - data entry
   - clinical research
@@ -38,11 +40,4 @@ license: "MIT"
 repository-code: "https://github.com/grezniczek/redcap_field_shuffle"
 url: "https://github.com/grezniczek/redcap_field_shuffle"
 
-version: "1.1.5"
-date-released: "2026-06-21"
 doi: "10.5281/zenodo.20782543"
-
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.20782543"
-    description: "Archived software release"
