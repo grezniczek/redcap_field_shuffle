@@ -1,6 +1,6 @@
 # Field Shuffle
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20782543.svg)](https://doi.org/10.5281/zenodo.20782543)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22800062.svg)](https://doi.org/10.5281/zenodo.22800062)
 
 ## Support this work
 
