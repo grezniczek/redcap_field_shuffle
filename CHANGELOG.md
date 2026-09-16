@@ -2,7 +2,7 @@
 
 | Version | Changes |
 | --- | --- |
-| Unreleased | Added server-side `@SHUFFLE-FIELDS-PAGED` and `@SHUFFLE-FIELDS-PAGED-SINGLE` modes, internal `~` shuffling, and `@SHUFFLE-FIELDS-SH` page-header overrides. |
+| 1.2.0 | Added server-side `@SHUFFLE-FIELDS-PAGED` and `@SHUFFLE-FIELDS-PAGED-SINGLE` modes, internal `~` shuffling, and `@SHUFFLE-FIELDS-SH` page-header overrides. |
 | 1.1.5 | Security hardening in helper class. |
 | 1.1.4 | Security hardening for potential future expansions.<br>Changed the PHP namespace.<br>Updated to External Module Framework 16. |
 | 1.1.3 | Prevented a PHP 8 error when the action tag is used without parameters. |
