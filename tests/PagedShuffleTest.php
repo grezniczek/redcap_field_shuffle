@@ -17,8 +17,7 @@ function failTest($message)
 function assertSameValue($expected, $actual, $message)
 {
     if ($expected !== $actual) {
-        failTest($message . "\nExpected: " . var_export($expected, true)
-            . "\nActual: " . var_export($actual, true));
+        failTest($message);
     }
 }
 
