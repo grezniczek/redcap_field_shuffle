@@ -1,6 +1,10 @@
 <?php
 
+namespace DE\RUB\FieldShuffleExternalModule\Tests;
+
 use DE\RUB\FieldShuffleExternalModule\PagedShuffle;
+use InvalidArgumentException;
+use RuntimeException;
 
 require_once dirname(__DIR__) . "/classes/ActionTagParser.php";
 require_once dirname(__DIR__) . "/classes/PagedShuffle.php";
@@ -252,12 +256,12 @@ function testHiddenSingleStorageFieldIsNotAPage()
 }
 
 $tests = array(
-    "grammar and round trip" => "testGrammarAndRoundTrip",
-    "invalid grammar and stored orders" => "testInvalidGrammarAndStoredOrders",
-    "PAGED fixed slots" => "testPagedFixedSlots",
-    "PAGED-SINGLE regions and headers" => "testPagedSingleRegionsAndHeaders",
-    "section-header precedence" => "testSectionHeaderOverridePrecedence",
-    "hidden PAGED-SINGLE storage field" => "testHiddenSingleStorageFieldIsNotAPage",
+    "grammar and round trip" => __NAMESPACE__ . "\\testGrammarAndRoundTrip",
+    "invalid grammar and stored orders" => __NAMESPACE__ . "\\testInvalidGrammarAndStoredOrders",
+    "PAGED fixed slots" => __NAMESPACE__ . "\\testPagedFixedSlots",
+    "PAGED-SINGLE regions and headers" => __NAMESPACE__ . "\\testPagedSingleRegionsAndHeaders",
+    "section-header precedence" => __NAMESPACE__ . "\\testSectionHeaderOverridePrecedence",
+    "hidden PAGED-SINGLE storage field" => __NAMESPACE__ . "\\testHiddenSingleStorageFieldIsNotAPage",
 );
 
 foreach ($tests as $label => $test) {
