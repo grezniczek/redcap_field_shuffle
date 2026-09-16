@@ -9,7 +9,6 @@ message: >-
 type: software
 
 title: "Field Shuffle (REDCap External Module)"
-short-title: "Field Shuffle"
 
 abstract: >-
   Field Shuffle is a REDCap External Module for randomizing the display order
